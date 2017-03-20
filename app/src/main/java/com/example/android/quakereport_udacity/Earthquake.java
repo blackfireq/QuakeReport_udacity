@@ -6,17 +6,17 @@ package com.example.android.quakereport_udacity;
 
 public class Earthquake {
 
-    private String mMagnitude;
+    private double mMagnitude;
     private String mLocation;
     private String mDate;
 
-    public Earthquake(String magnitude, String location, String date){
+    public Earthquake(double magnitude, String location, String date){
         mMagnitude = magnitude;
         mLocation = location;
         mDate = date;
     }
 
-    public String getMagnitude() {
+    public double getMagnitude() {
         return mMagnitude;
     }
 
@@ -24,7 +24,5 @@ public class Earthquake {
         return mLocation;
     }
 
-    public String getDate() {
-        return mDate;
-    }
+    public String getDate() { return mDate; }
 }
