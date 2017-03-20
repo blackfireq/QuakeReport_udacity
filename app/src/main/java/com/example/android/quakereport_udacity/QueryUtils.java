@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by mikem on 3/20/2017.
@@ -66,10 +68,10 @@ public final class QueryUtils {
 //                  Extract “place” for location
                 String place = properties.getString("place");
 //                  Extract “time” for time
-                String time = properties.getString("time");
+                long timeInMilliseconds = properties.getLong("time");
 //                  Create Earthquake java object from magnitude, location, and time
 //                  Add earthquake to list of earthquakes
-                earthquakes.add(new Earthquake(mag,place,time));
+                earthquakes.add(new Earthquake(mag,place,timeInMilliseconds));
             }
 
         } catch (JSONException e) {
