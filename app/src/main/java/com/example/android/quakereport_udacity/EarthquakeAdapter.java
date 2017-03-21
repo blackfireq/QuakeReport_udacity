@@ -1,7 +1,9 @@
 package com.example.android.quakereport_udacity;
 
 import android.app.Activity;
+import android.location.Location;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +42,20 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         //set the text of the view that will display the magnitude
         magnitudeView.setText(Double.toString(currentQuake.getMagnitude()));
 
-        //get the view that will display the location
-        TextView locationView = (TextView)convertView.findViewById(R.id.location_view);
+        // get time and format it into 2 string array
+        String[] locationArray  = formatLocation(currentQuake.getLocation());
 
-        //set the text of the view that will display the location
-        locationView.setText(currentQuake.getLocation());
+        //get the view that will display the  offset location
+        TextView offsetLocationView = (TextView)convertView.findViewById(R.id.location_offset_view);
+
+        //set the text of the view that will display the offset location
+        offsetLocationView.setText(locationArray[0]);
+
+        //get the view that will display the  primary location
+        TextView primaryLocationView = (TextView)convertView.findViewById(R.id.location_primary_view);
+
+        //set the text of the view that will display the primary location
+        primaryLocationView.setText(locationArray[1]);
 
         // Create a new Date object from the time in milliseconds of the earth
         Date dateObject = new Date(currentQuake.getTimeInMilliseconds());
@@ -63,6 +74,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         String formattedTime = formatTime(dateObject);
         // Display the time of the current earthquake in that TextView
         timeView.setText(formattedTime);
+        Log.i("EarthquakeAdapter",formattedTime);
 
 
         return convertView;
@@ -84,4 +96,20 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         return timeFormat.format(dateObject);
     }
 
+    //check for keywords to split string
+    // return array with the split location
+    private String[] formatLocation(String location){
+        String[] locationArray = new String[2];
+        int offsetLocation = location.indexOf("of");
+        // needs work ************************************************
+        if (offsetLocation > -1){
+            locationArray[0] = "Near the";
+            locationArray[1] = location;
+        } else {
+            locationArray[0] = "Near the";
+            locationArray[1] = location;
+        }
+
+        return locationArray;
+    }
 }
