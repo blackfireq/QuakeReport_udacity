@@ -103,8 +103,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         int offsetLocation = location.indexOf("of");
         // needs work ************************************************
         if (offsetLocation > -1){
-            locationArray[0] = "Near the";
-            locationArray[1] = location;
+            locationArray[0] = location.substring(0,offsetLocation+2);
+            locationArray[1] = location.substring(offsetLocation+2);
         } else {
             locationArray[0] = "Near the";
             locationArray[1] = location;
