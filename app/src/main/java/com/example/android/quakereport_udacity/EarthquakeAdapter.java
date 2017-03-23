@@ -91,8 +91,6 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake>{
         String formattedTime = formatTime(dateObject);
         // Display the time of the current earthquake in that TextView
         timeView.setText(formattedTime);
-        Log.i("EarthquakeAdapter",formattedTime);
-
 
         return convertView;
     }
