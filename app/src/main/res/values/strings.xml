@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">QuakeReport_udacity</string>
     <string name="emptyList">There are no Earthquakes</string>
+    <string name="noInternet">No Internet Connection</string>
 </resources>

@@ -2,8 +2,11 @@ package com.example.android.quakereport_udacity;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Loader;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import static android.media.CamcorderProfile.get;
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>>{
 
@@ -49,22 +53,32 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
+        //Find reference to ProgressBar
+        mProgressBarView = (ProgressBar) findViewById(R.id.loading_spinner);
 
-        // new EarthquakeTask().execute(USGS_REQUEST_URL);
-        // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getLoaderManager();
+        /** check for internet connection*/
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Get details on the currently active default data network
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.emptyList);
 
 
-            //Find reference to ProgressBar
-            mProgressBarView = (ProgressBar)findViewById(R.id.loading_spinner);
+        if(isConnected) {
+            // new EarthquakeTask().execute(USGS_REQUEST_URL);
+            // Get a reference to the LoaderManager, in order to interact with loaders.
+            LoaderManager loaderManager = getLoaderManager();
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
 
             // Find a reference to the {@link ListView} in the layout
-            ListView earthquakeListView = (ListView)findViewById(R.id.list);
+            ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
             // Create a new {@link ArrayAdapter} of earthquakes
             mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -72,8 +86,6 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             // Set the adapter on the {@link ListView}
             // so the list can be populated in the user interface
             earthquakeListView.setAdapter(mAdapter);
-
-            mEmptyStateTextView = (TextView) findViewById(R.id.emptyList);
             earthquakeListView.setEmptyView(mEmptyStateTextView);
 
 
@@ -89,11 +101,16 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                     // Convert the String URL into a URI object (to pass into the Intent constructor)
                     Uri webUrl = Uri.parse(currentQuake.getWebsiteURL());
 
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,webUrl);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, webUrl);
                     startActivity(browserIntent);
 
                 }
             });
+        } else {
+            mProgressBarView.setVisibility(GONE);
+            mEmptyStateTextView.setVisibility(VISIBLE);
+            mEmptyStateTextView.setText(R.string.noInternet);
+        }
     }
 
     @Override
