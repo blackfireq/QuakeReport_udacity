@@ -104,21 +104,4 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
         mAdapter.clear();
     }
-
-    //    private class EarthquakeTask extends AsyncTask<String,Void,ArrayList<Earthquake>> {
-//
-//        @Override
-//        protected ArrayList<Earthquake> doInBackground(String... url) {
-//            // Create a fake list of earthquake locations.
-//            ArrayList<Earthquake> earthquakes = QueryUtils.fetchEarthquakeData(url[0]);
-//            return earthquakes;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
-//            super.onPostExecute(earthquakes);
-//            updateUI(earthquakes);
-//        }
-//    }
-
 }
