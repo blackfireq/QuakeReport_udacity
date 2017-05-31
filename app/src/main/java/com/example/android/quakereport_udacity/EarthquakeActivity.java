@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -35,11 +36,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     /** Adapter for the list of earthquakes */
     private EarthquakeAdapter mAdapter;
 
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-
 
 
         // new EarthquakeTask().execute(USGS_REQUEST_URL);
@@ -64,6 +67,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             // so the list can be populated in the user interface
             earthquakeListView.setAdapter(mAdapter);
 
+            mEmptyStateTextView = (TextView) findViewById(R.id.emptyList);
+            earthquakeListView.setEmptyView(mEmptyStateTextView);
 
 
             // set onclicklistener to send to the webpage of the earthquake thats clicked on
@@ -93,6 +98,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        // Set empty state text to display "No earthquakes found."
+        mEmptyStateTextView.setText(R.string.emptyList);
+
         mAdapter.clear();
 
         if (earthquakes != null && !earthquakes.isEmpty()) {

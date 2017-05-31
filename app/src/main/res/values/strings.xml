@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QuakeReport_udacity</string>
+    <string name="emptyList">There are no Earthquakes</string>
 </resources>
